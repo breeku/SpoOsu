@@ -1,19 +1,34 @@
 const spotifyRouter = require("express").Router()
 const spotifyApi = require("../spotifySetup")
 
-spotifyRouter.post("/", async (req, res) => {
+const refreshTokens = async refreshToken => {
     try {
-        await spotifyApi.setRefreshToken(req.body.refreshToken)
+        await spotifyApi.setRefreshToken(refreshToken)
         const refreshedToken = await spotifyApi.refreshAccessToken()
         await spotifyApi.setAccessToken(refreshedToken.body.access_token)
+        console.log("tokens refreshed and set")
+    } catch (e) {
+        console.log(e)
+    }
+}
 
+const getPlaylists = async () => {
+    try {
         const currentUser = await spotifyApi.getMe()
-        //console.log(currentUser)
+        const playlists = await spotifyApi.getUserPlaylists(
+            currentUser.body.display_name
+        )
+        return playlists.body
+    } catch (e) {
+        console.log(e)
+    }
+}
 
-        const playlists = await spotifyApi.getUserPlaylists(currentUser.body.display_name)
-        //console.log(playlists.body)
-
-        res.send(playlists.body)
+spotifyRouter.post("/", async (req, res) => {
+    try {
+        await refreshTokens(req.body.refreshToken) // should probs wait for access to expire
+        const playlists = await getPlaylists()
+        res.send(playlists)
     } catch (e) {
         console.log(e)
     }

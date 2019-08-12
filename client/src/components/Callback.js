@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Redirect } from "react-router"
 import auth from '../services/auth'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Callback = props => {
     const [accessToken, setAccessToken] = useState(null)
@@ -39,7 +40,7 @@ const Callback = props => {
                     pathname: "/main/",
                     state: { accessToken, refreshToken }
                 }}
-            /> : <div>Loading...</div>}
+            /> : <CircularProgress/>}
 
             </div>
         )

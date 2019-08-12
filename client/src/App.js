@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react"
 import "./App.css"
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom"
+import { BrowserRouter as Router, Route, Redirect, Switch} from "react-router-dom"
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import "./css/animations.css";
 
 import Main from "./components/Main"
 import Callback from "./components/Callback"
 import Login from "./components/Login"
+import Tracks from "./components/Tracks"
 
 const App = props => {
     const [accessToken, setAccessToken] = useState(null)
@@ -23,10 +27,12 @@ const App = props => {
     }, [])
     return (
         <Router>
-            <div className="App">
-                {accessToken === null ? (
-                    <div>Loading...</div>
-                ) : (
+             <Route
+                render={({ location }) => (
+                    <div className="App">
+                        {accessToken === null ? (
+                        <CircularProgress/>
+                    ) : (
                     <Route
                         exact
                         path="/"
@@ -44,11 +50,22 @@ const App = props => {
                         }
                     />
                 )}
-
-                <Route exact path="/main/" component={Main} />
-                <Route exact path="/login/" component={Login} />
-                <Route path="/callback/" component={Callback} />
+                <TransitionGroup>
+                <CSSTransition
+                  key={location.key}
+                  classNames="fade"
+                  timeout={300}
+                >
+                    <Switch location={location}>
+                        <Route exact path="/main/" component={Main} />
+                        <Route exact path="/main/tracks/" component={Tracks} />
+                        <Route exact path="/login/" component={Login} />
+                        <Route path="/callback/" component={Callback} />
+                    </Switch>
+                </CSSTransition>
+                </TransitionGroup>
             </div>
+            )}/>
         </Router>
     )
 }
