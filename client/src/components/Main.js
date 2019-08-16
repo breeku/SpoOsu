@@ -25,6 +25,7 @@ const Main = props => {
                         accessToken={props.location.state.accessToken}
                         refreshToken={props.location.state.refreshToken}
                         history={props.location.state.history}
+                        cachedPlaylist={props.location.state.cachedPlaylist}
                     />
                 </div>
             ) : (

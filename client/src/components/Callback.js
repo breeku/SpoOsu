@@ -12,7 +12,6 @@ const Callback = props => {
         const getToken = async () => {
             try {
                 const response = await auth.login(code)
-                console.log(response)
                 let accToken = response.accessToken
                 let refToken = response.refreshToken
                 setAccessToken(accToken)
