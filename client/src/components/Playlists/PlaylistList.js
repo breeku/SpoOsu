@@ -57,7 +57,6 @@ const PlaylistList = ({playlist, tokens, list ,currentElement}) => {
         md={6}
         xl={4}
         justify="center"
-        key={list.id}
     >
         <div className={`${list.id}`} ref={currentElement}>
             <HtmlTooltip

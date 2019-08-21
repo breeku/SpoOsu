@@ -53,7 +53,7 @@ const Playlists = ({ accessToken, refreshToken, history, cachedPlaylist }) => {
     return (
         <Grid container>
             {playlist ? playlist.map(list => (
-                <PlaylistList currentElement={currentElement} playlist={playlist} tokens={tokens} list={list}/>
+                <PlaylistList currentElement={currentElement} playlist={playlist} tokens={tokens} list={list} key={list.id}/>
             )) : 
             <Grid container item justify="center">
                 <CircularProgress/>
